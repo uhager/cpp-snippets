@@ -1,3 +1,13 @@
+/* producer_consumer.cpp: multithreading with semaphores: 
+The consumers must wait for the producer, and the producer must wait for the consumers to finish.
+The consumers don't change the data and should run in parallel to save time.
+
+author: Ulrike Hager
+date: Feb. 2016
+
+To compile:
+g++ -std=c++11 -Wall -pthread -o producer_consumer producer_consumer.cpp
+ */
 #include <thread>
 #include <mutex>
 #include <random>

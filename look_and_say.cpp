@@ -99,12 +99,12 @@ read_starting_sequence()
 int main()
 {
   unsigned int num = 0;
-  std::cout << "Enter the number of solutions you for the sequence: " << std::flush;
+  std::cout << "Enter the number of sequences to calculate: " << std::flush;
   
   while (std::cin >> num ){
     std::string ini_sol = read_starting_sequence();
     calculate_solutions(num, ini_sol);
-    std::cout << "\nEnter the number of solutions you for the sequence: " << std::flush;
+    std::cout << "\nEnter the number of sequences to calculate: " << std::flush;
   }
 }
 
