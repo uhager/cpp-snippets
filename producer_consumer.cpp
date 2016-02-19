@@ -56,7 +56,8 @@ private:
   int n_threads_;
 };
 
-Semaphore g_sem_consumed(2);
+
+Semaphore g_sem_consumed(3);
 std::vector<Semaphore> g_sem_produced;
 
 
@@ -83,45 +84,35 @@ void producer(int& data, unsigned int n_consumers, unsigned int wait = 0)
 }
 
 
-void consumer0(const int& data, unsigned int num = 0, unsigned int wait = 0)
+void consumer(const int& data, unsigned int num = 0, unsigned int wait = 0)
 {
   g_sem_consumed.notify_one();
   while (true) {
     g_sem_produced.at(num).wait_one();
     std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-    std::cout << "[consumer1] data = " << data << std::endl;
+    std::cout << "consumer " << num << " data = " << data << std::endl;
     g_sem_consumed.notify_one();
   }
 }
 
-
-void consumer1(const int& data, unsigned int num = 1, unsigned int wait = 0)
-{
-  g_sem_consumed.notify_one();
-  while (true) {
-    g_sem_produced.at(num).wait_one();
-    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-    std::cout << "[consumer2] data = " << data << std::endl;
-    g_sem_consumed.notify_one();
-  }
-}
 
 
 int main()
 {
   int data = -1;
-  unsigned int n_threads = 2;
-  std::vector<unsigned int> wait{0,50,100};
+  unsigned int n_consumers = 3;
+  std::vector<unsigned int> wait{0,50,130,100};
   
-  for (unsigned int i = 0; i < n_threads; ++i ) {
-     g_sem_produced.emplace_back( Semaphore() );
-  }
-  std::thread t0( producer, std::ref(data), n_threads, wait.at(0));
-  std::thread t1( consumer0, std::cref(data), 0, wait.at(1) );
-  std::thread t2( consumer1, std::cref(data), 1, wait.at(2));
+  std::vector<std::thread> threads;
+  threads.push_back( std::thread( producer, std::ref(data), n_consumers, wait.at(0)) ) ;
 
-  t0.join();
-  t1.join();
-  t2.join();
+  for (unsigned int i = 0; i < n_consumers; ++i ) {
+     g_sem_produced.emplace_back( Semaphore() );
+     threads.push_back( std::thread( consumer, std::cref(data), i, wait.at(i+1)) ); 
+  }
+
+  for (unsigned int i = 0; i != n_consumers+1; ++i ) {
+    threads.at(i).join();
+  }
 }
 
