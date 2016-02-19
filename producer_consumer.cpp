@@ -87,11 +87,9 @@ void consumer0(const int& data, unsigned int num = 0, unsigned int wait = 0)
 {
   g_sem_consumed.notify_one();
   while (true) {
-    {
-      g_sem_produced.at(num).wait_one();
-      std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-      std::cout << "[consumer1] data = " << data << std::endl;
-    }
+    g_sem_produced.at(num).wait_one();
+    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+    std::cout << "[consumer1] data = " << data << std::endl;
     g_sem_consumed.notify_one();
   }
 }
@@ -101,11 +99,9 @@ void consumer1(const int& data, unsigned int num = 1, unsigned int wait = 0)
 {
   g_sem_consumed.notify_one();
   while (true) {
-    {
-      g_sem_produced.at(num).wait_one();
-      std::this_thread::sleep_for(std::chrono::milliseconds(wait));
-      std::cout << "[consumer2] data = " << data << std::endl;
-    }
+    g_sem_produced.at(num).wait_one();
+    std::this_thread::sleep_for(std::chrono::milliseconds(wait));
+    std::cout << "[consumer2] data = " << data << std::endl;
     g_sem_consumed.notify_one();
   }
 }
