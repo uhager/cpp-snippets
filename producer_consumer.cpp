@@ -56,8 +56,8 @@ private:
   int n_threads_;
 };
 
-
-Semaphore g_sem_consumed(3);
+unsigned int consumers = 2;
+Semaphore g_sem_consumed(consumers);
 std::vector<Semaphore> g_sem_produced;
 
 
@@ -100,18 +100,19 @@ void consumer(const int& data, unsigned int num = 0, unsigned int wait = 0)
 int main()
 {
   int data = -1;
-  unsigned int n_consumers = 3;
-  std::vector<unsigned int> wait{0,50,130,100};
+
+  std::vector<unsigned int> wait(consumers+1, 0);
+  //  wait = {0,50,130,100};
   
   std::vector<std::thread> threads;
-  threads.push_back( std::thread( producer, std::ref(data), n_consumers, wait.at(0)) ) ;
+  threads.push_back( std::thread( producer, std::ref(data), consumers, wait.at(0)) ) ;
 
-  for (unsigned int i = 0; i < n_consumers; ++i ) {
+  for (unsigned int i = 0; i < consumers; ++i ) {
      g_sem_produced.emplace_back( Semaphore() );
      threads.push_back( std::thread( consumer, std::cref(data), i, wait.at(i+1)) ); 
   }
 
-  for (unsigned int i = 0; i != n_consumers+1; ++i ) {
+  for (unsigned int i = 0; i != consumers+1; ++i ) {
     threads.at(i).join();
   }
 }
