@@ -103,6 +103,8 @@ int main()
 
   std::vector<unsigned int> wait(consumers+1, 0);
   //  wait = {0,50,130,100};
+  wait.at(0) = 0;
+  wait.at(2) = 0;
   
   std::vector<std::thread> threads;
   threads.push_back( std::thread( producer, std::ref(data), consumers, wait.at(0)) ) ;
