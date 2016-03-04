@@ -57,6 +57,21 @@ void odd_even_modulo(uint64_t number)
 }
 
 
+void odd_even_modulo_backwards(uint64_t number)
+{
+  auto start_time = std::chrono::high_resolution_clock::now();
+  bool is_odd = false;
+  for (uint32_t i = ITERATIONS; i > 0 ; --i ) {
+    if ( number % 2 )
+      is_odd = true;
+  }
+  auto current_time = std::chrono::high_resolution_clock::now();
+  double time = std::chrono::duration_cast<std::chrono::duration<double>> (current_time - start_time).count();
+  //std::cout << (is_odd? "odd" : "even") << "\n";
+  std::cout << "[odd_even_modulo_backwards] time: " << time << "\n";
+}
+
+
 void odd_even_string(uint64_t number)
 {
   auto start_time = std::chrono::high_resolution_clock::now();
@@ -85,15 +100,19 @@ int main()
     odd_even_modulo(number);
     odd_even_string(number);
     odd_even_char(number);
+    odd_even_modulo_backwards(number);
     odd_even_modulo(number);
     odd_even_string(number);
     odd_even_char(number);
+    odd_even_modulo_backwards(number);
     odd_even_modulo(number);
     odd_even_modulo(number);
     odd_even_string(number);
     odd_even_string(number);
     odd_even_char(number);
     odd_even_char(number);
+    odd_even_modulo_backwards(number);
+    odd_even_modulo_backwards(number);
 
     std::cout << "\nEnter a number to test: ";
   }
