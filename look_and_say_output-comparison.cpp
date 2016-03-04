@@ -51,7 +51,7 @@ append_char(std::vector<char>& solution, unsigned int& pos, char to_add)
 void
 append_solution(std::vector<char>& solution, unsigned int& pos, int count, char digit)
 {
-  append_char( solution, pos, (char)( count + 48 ) );
+  append_char( solution, pos, (char)( count )+ '0' );
   append_char( solution, pos, digit );	       
 }
 
