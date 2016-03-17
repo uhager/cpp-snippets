@@ -47,6 +47,7 @@ void odd_even_modulo(uint64_t number)
   auto start_time = std::chrono::high_resolution_clock::now();
   bool is_odd = false;
   for (uint32_t i = 0; i < ITERATIONS ; ++i ) {
+    asm volatile("");
     if ( number % 2 )
       is_odd = true;
   }
