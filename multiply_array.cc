@@ -1,10 +1,10 @@
 /*  multiply_array.cc: replace every number in an array with the product of all other numbers in the array.
-author: Ulrike Hager
-date: Jul. 2016
+    author: Ulrike Hager
+    date: Jul. 2016
 
-To compile:
-g++ -std=c++11 -Wall -o multiply_array multiply_array.cpp
- */
+    To compile:
+    g++ -std=c++11 -Wall -o multiply_array multiply_array.cpp
+*/
 
 #include <iostream>
 #include <string>
@@ -33,6 +33,26 @@ void using_division(int* arr, int size, int* result)
     result[i] = total / arr[i];
   }
 }
+
+//wrong result?
+void forwards_backwards(int* arr, int size, int* result)
+{
+  int left_to_right[size];
+  int right_to_left[size];
+  left_to_right[0] = 1;
+  right_to_left[size-1] = 1;
+  for (int i = 1 ; i<size ; ++i) {
+    left_to_right[i] = left_to_right[i-1] * arr[i-1];
+  }
+  for (int i = size-2 ; i>0 ; --i) {
+    right_to_left[i] = right_to_left[i+1] * arr[i+1];
+  }
+
+  for (int i = 0 ; i<size ; ++i) {
+    result[i] = left_to_right[i] * right_to_left[i];
+  }
+}
+
 
 
 int main()
@@ -70,4 +90,12 @@ int main()
   }
   std::cout << "\n";
 
+  /* wrong
+  std::cout << "Forwards-backwards partial products: ";
+  forwards_backwards(arr, size, result);
+  for (int i = 0; i<size; ++i) {
+    std::cout << result[i] << ", " ;
+  }
+  std::cout << "\n";
+  */
 }
