@@ -34,7 +34,7 @@ void using_division(int* arr, int size, int* result)
   }
 }
 
-//wrong result?
+
 void forwards_backwards(int* arr, int size, int* result)
 {
   int left_to_right[size];
@@ -44,7 +44,7 @@ void forwards_backwards(int* arr, int size, int* result)
   for (int i = 1 ; i<size ; ++i) {
     left_to_right[i] = left_to_right[i-1] * arr[i-1];
   }
-  for (int i = size-2 ; i>0 ; --i) {
+  for (int i = size-2 ; i >= 0 ; --i) {
     right_to_left[i] = right_to_left[i+1] * arr[i+1];
   }
 
@@ -54,16 +54,26 @@ void forwards_backwards(int* arr, int size, int* result)
 }
 
 
-
-int main()
+void calc_and_print(void (*fptr)(int*, int, int*), int* arr, int size, const std::string& title = "Result")
 {
-  int size = 0;
+  int result[size];
+  std::cout << title << ": ";
+  fptr(arr, size, result);
+  for (int i = 0; i<size; ++i) {
+    std::cout << result[i] << ", " ;
+  }
+  std::cout << "\n";
+}
+
+
+void get_input_array(int* arr, int& size)
+{
   std::string arr_string;
-  int* arr = new int();
-  int* curr = arr;
 
   std::cout << "Enter comma-separated array: ";
   std::getline( std::cin, arr_string );
+
+  int* curr = arr;
   while (arr_string.size()) {
     std::string::size_type comma = arr_string.find_first_of(",");
     if ( comma > 0 ) {
@@ -73,29 +83,20 @@ int main()
     arr_string.erase(0,comma+1);
     if (comma == std::string::npos) break;
   }
+}
 
-  int result[size];
 
-  std::cout << "Brute force: ";
-  brute_force(arr, size, result);
-  for (int i = 0; i<size; ++i) {
-    std::cout << result[i] << ", " ;
+int main()
+{
+  int size = 0;
+  int* arr = new int();
+
+  get_input_array(arr, size);
+
+  void (*methods[])(int*, int, int*) = { brute_force, using_division, forwards_backwards};
+  std::string outputs[] = {"Brute force", "With division: ", "Forwards-backwards partial products: "};
+
+  for ( int i = 0 ; i<3; ++i ) {
+    calc_and_print(*methods[i], arr, size,outputs[i] );
   }
-  std::cout << "\n";
-
-  std::cout << "With division: ";
-  using_division(arr, size, result);
-  for (int i = 0; i<size; ++i) {
-    std::cout << result[i] << ", " ;
-  }
-  std::cout << "\n";
-
-  /* wrong
-  std::cout << "Forwards-backwards partial products: ";
-  forwards_backwards(arr, size, result);
-  for (int i = 0; i<size; ++i) {
-    std::cout << result[i] << ", " ;
-  }
-  std::cout << "\n";
-  */
 }
