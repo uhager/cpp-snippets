@@ -1,5 +1,5 @@
 /*
-  HeighwayDragon_strings.cpp: based on https://projecteuler.net/problem=220 but runs out of memory for too many iterations
+  HeighwayDragon_strings.cpp: based on https://projecteuler.net/problem=220 but runs out of memory for too many iterations, needs something smarter
   author: Ulrike Hager
   data: Aug. 2016
 
@@ -8,6 +8,8 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
+#include <sstream>
 
 std::string next_solution(std::string& current);
 
@@ -84,13 +86,34 @@ Point track_coordinates( const std::string& input, const long& steps )
   return coord;
 }
 
+// helper function to find pattern in output string
+std::string string_to_numbers( const std::string& input )
+{
+  std::stringstream numbers;
+  std::vector<std::string> pattern = {"FaRbFRRL", "FaLbFRRL", "FaRbFRLL", "FaLbFRLL"};
+  unsigned int i = 0;
+  while ( i < input.size() ) {
+    std::string s = input.substr( i, pattern[0].size() );
+    for ( unsigned int j = 0; j < pattern.size() ; ++j ) {
+      if ( s == pattern[j] ) {
+	numbers << j;
+	break;
+      }
+    }
+    i += pattern[0].size();
+  }
+
+  return numbers.str();
+}
+
 
   int main()
   {
-    int iterations = 15;
-    long steps = 1100001;
+    int iterations = 8;
+    long steps = 111;
     std::string track = find_nth_solution( iterations );
     Point location = track_coordinates( track, steps );
-    //    std::cout << "result D_" << iterations << ": " <<  track << "\nCoordinates after " << steps << " steps: (" << location.x << "," << location.y << ")\n";
-    std::cout << "result D_" << iterations << ": " <<  " Coordinates after " << steps << " steps: (" << location.x << "," << location.y << ")\n";
+    std::cout << "result D_" << iterations << ": " <<  track << "\nCoordinates after " << steps << " steps: (" << location.x << "," << location.y << ")\n";
+    //std::cout << "result D_" << iterations << ": " <<  " Coordinates after " << steps << " steps: (" << location.x << "," << location.y << ")\n";
+    //    std::cout << string_to_numbers( track ) << "\n";
   }
