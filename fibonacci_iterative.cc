@@ -5,15 +5,17 @@ data: Jan. 2016
 
 #include <iostream>
 
-int
+typedef unsigned long long ull;
+
+ull
 fib(int n)
 {
-  int result = 1;
+  ull result = 1;
   if (n == 0 || n == 1 )  return result;
   
-  int previous = 1;
+  ull previous = 1;
   while (n > 1){
-    int swap = result;
+    ull swap = result;
     result += previous;
     previous = swap;
     --n;
@@ -27,7 +29,7 @@ main()
   int n = 0;
   std::cout << "Enter a number: " << std::flush;
   while ( std::cin >> n ) {
-    int result = fib(n);
+    ull result = fib(n);
     std::cout << "fib(" << n << ") = " << result << std::endl;
     std::cout << "Enter a number: " << std::flush;
   }
