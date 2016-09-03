@@ -86,7 +86,6 @@ Pathfinder::add_node(const std::vector<std::string>& board, int row, int col)
   to_add.type = board.at(row).at(col);
   to_add.next = nullptr;
 
-  std::cout << "[Pathfinder::add_node] " << to_add.index << " at (" << row << "," << col << ")" << std::endl;;  
   if ( to_add.type != 'X'){
     int rel[] = {0, -1, 0, 1, 0};
     for ( int i = 0; i < 4; ++i ) {
@@ -101,9 +100,7 @@ Pathfinder::add_node(const std::vector<std::string>& board, int row, int col)
       }
     }
   }
-  std::cout << "[Pathfinder::add_node] " << to_add.index << " connected" << std::endl;  
   nodes.push_back(std::move(to_add));
-  std::cout << "[Pathfinder::add_node] " << nodes.back().index << " added" << std::endl;  
 }
 
 
@@ -340,7 +337,7 @@ Pathfinder::construct_track(int start, int end, int* parents)
 
 int main()
 {
-  std::vector<std::string> board = {"OTOOXOO","OXOXOOO","OOOXXXO","XOOOOXO","OXOOOOO","XXXOOOO"};
+  std::vector<std::string> board = {"OTOOOOXX","OXOXXOOX","OOOXXXOO","XOOOOXOO","OXOOOOOO","XXXOOOOX"};
   Pathfinder pf(board);
   //  pf.print_nodes();
 
@@ -351,5 +348,7 @@ int main()
   pf.bfs(5, 5);
   pf.bfs(4, 0);
   pf.dfs(5, 5);
-  pf.dfs(4, 0);
+
+  pf.bfs(4, 7);
+  pf.dfs(4, 7);
 }
