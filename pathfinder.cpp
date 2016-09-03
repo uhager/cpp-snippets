@@ -300,10 +300,13 @@ Pathfinder::plot_track(std::vector<int> track)
     if ( n.index % cols == 0 ) std::cout << "\n";
     if ( n.index == pq.top() ) {
       pq.pop();
-      if ( n.index == track.back() ) std::cout << 'S';
-      else std::cout << '.';
+      if ( n.index == track.back() ) std::cout << "\033[0;36mS\033[0;37m";
+      else std::cout << "\033[0;36m.\033[0;37m";
     }
-    else std::cout << n.type ;
+    else {
+      if ( n.type == 'T' ) std::cout << "\033[0;36m" << n.type << "\033[0;37m";
+      else std::cout << n.type ;
+    }
   }
   std::cout << "\n\n";
 
